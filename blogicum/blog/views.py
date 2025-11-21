@@ -198,6 +198,12 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
             return redirect('blog:post_detail', id=post.pk)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        """Переопределяем, чтобы не передавать форму в контекст."""
+        context = super().get_context_data(**kwargs)
+        context.pop('form', None)
+        return context
+
     def get_success_url(self):
         return reverse(
             'blog:profile',
@@ -257,6 +263,12 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         if comment.author != request.user:
             return redirect('blog:post_detail', id=comment.post.pk)
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """Переопределяем, чтобы не передавать форму в контекст."""
+        context = super().get_context_data(**kwargs)
+        context.pop('form', None)
+        return context
 
     def get_success_url(self):
         return reverse(
